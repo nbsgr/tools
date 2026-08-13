@@ -1,0 +1,24 @@
+{
+  "name": "coderun-tools",
+  "version": "1.0.0",
+  "description": "Standalone, multi-provider AI agent tools library in plain JavaScript",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node test/runTests.js"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "tools",
+    "function-calling",
+    "llm",
+    "coderun",
+    "openai",
+    "anthropic",
+    "gemini",
+    "ollama"
+  ],
+  "author": "",
+  "license": "MIT"
+}
