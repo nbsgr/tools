@@ -1,5 +1,5 @@
 // index.js — Main library entry point for coderun-tools (ESM)
-import { getDefinitions, executeTool } from './src/toolRegistry.js';
+import { getDefinitions, executeTool, toolNames, getToolNames } from './src/toolRegistry.js';
 import { readFile } from './src/tools/readFile.js';
 import { writeFile } from './src/tools/writeFile.js';
 import { editFile } from './src/tools/editFile.js';
@@ -23,6 +23,8 @@ import { webRequest } from './src/tools/webRequest.js';
 export {
   getDefinitions,
   executeTool,
+  toolNames,
+  getToolNames,
   readFile,
   writeFile,
   editFile,
@@ -48,6 +50,8 @@ export {
 var coderunTools = {
   getDefinitions: getDefinitions,
   executeTool: executeTool,
+  toolNames: toolNames,
+  getToolNames: getToolNames,
   readFile: readFile,
   writeFile: writeFile,
   editFile: editFile,

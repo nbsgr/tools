@@ -122,6 +122,32 @@ export function executeTool(toolName, args, options) {
   });
 }
 
+export var toolNames = [
+  'read_file',
+  'write_file',
+  'edit_file',
+  'patch_file',
+  'delete_file',
+  'create_folder',
+  'delete_folder',
+  'list_directory',
+  'get_file_info',
+  'search_files',
+  'find_in_files',
+  'list_symbols',
+  'execute_command',
+  'terminal_input',
+  'stop_terminal',
+  'create_plan',
+  'update_plan',
+  'get_current_datetime',
+  'web_request'
+];
+
+export function getToolNames() {
+  return toolNames.slice();
+}
+
 export {
   registry
 };
