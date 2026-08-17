@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>coderun-tools — Documentation & Developer Guide</title>
+  <style>
+    :root {
+      --bg-dark: #0b0c0e;
+      --bg-sidebar: #131417;
+      --bg-card: #191a1e;
+      --bg-code: #0f1013;
+      --border-color: #26282e;
+      --text-main: #f0f0f2;
+      --text-muted: #94969e;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --font-mono: 'Cascadia Code', 'Consolas', 'Fira Code', 'Courier New', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    /* Top Navigation Header */
+    header.top-nav {
+      height: 64px;
+      border-bottom: 1px solid var(--border-color);
+      background-color: rgba(19, 20, 23, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: -0.3px;
+    }
+    .brand span.badge {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 3px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .search-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+      width: 280px;
+    }
+
+    /* Main Container Layout */
+    .doc-container {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Sidebar Navigation */
+    nav.sidebar {
+      width: 270px;
+      border-right: 1px solid var(--border-color);
+      background-color: var(--bg-sidebar);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 7px 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+    }
+    .nav-link:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .nav-link.active {
+      color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.12);
+      font-weight: 600;
+    }
+
+    /* Content Area */
+    main.content {
+      flex: 1;
+      max-width: 900px;
+      padding: 44px 56px;
+      margin: 0 auto;
+    }
+
+    /* Typography & Sections */
+    h1 { font-size: 34px; font-weight: 800; margin-bottom: 14px; letter-spacing: -0.6px; }
+    h2 { font-size: 22px; font-weight: 700; margin-top: 48px; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; letter-spacing: -0.3px; }
+    h3 { font-size: 16px; font-weight: 600; margin-top: 28px; margin-bottom: 12px; color: var(--accent-cyan); }
+    p { margin-bottom: 16px; color: #d4d4d8; font-size: 15px; }
+    ul, ol { margin-bottom: 18px; padding-left: 24px; color: #d4d4d8; }
+    li { margin-bottom: 6px; }
+
+    /* Code Blocks */
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 18px 0;
+      color: #e6edf3;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    code {
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      color: #58a6ff;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 13.5px;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--bg-sidebar);
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* Badges & Alerts */
+    .alert {
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 24px 0;
+      font-size: 14px;
+      border-left: 4px solid;
+    }
+    .alert-tip { background: rgba(16, 185, 129, 0.1); border-color: var(--accent-green); color: #a7f3d0; }
+    .alert-warning { background: rgba(245, 158, 11, 0.1); border-color: var(--accent-amber); color: #fde68a; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation Bar -->
+  <header class="top-nav">
+    <div class="brand">
+      🛠️ coderun-tools Documentation <span class="badge">v1.0.1</span>
+    </div>
+    <div class="search-box">
+      🔍 Search tools... <span style="margin-left:auto; font-size:10px; background:var(--bg-sidebar); padding:2px 6px; border-radius:4px;">Ctrl K</span>
+    </div>
+  </header>
+
+  <div class="doc-container">
+    <!-- Left Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="nav-section-title">Getting Started</div>
+      <a href="#overview" class="nav-link active">Overview</a>
+      <a href="#features" class="nav-link">Key Features</a>
+      <a href="#installation" class="nav-link">Installation</a>
+      <a href="#quickstart" class="nav-link">Quickstart & Imports</a>
+
+      <div class="nav-section-title">Filesystem Tools</div>
+      <a href="#readFile" class="nav-link">1. readFile</a>
+      <a href="#writeFile" class="nav-link">2. writeFile</a>
+      <a href="#editFile" class="nav-link">3. editFile</a>
+      <a href="#patchFile" class="nav-link">4. patchFile</a>
+      <a href="#deleteFile" class="nav-link">5. deleteFile</a>
+      <a href="#createFolder" class="nav-link">6. createFolder</a>
+      <a href="#deleteFolder" class="nav-link">7. deleteFolder</a>
+      <a href="#listDirectory" class="nav-link">8. listDirectory</a>
+      <a href="#getFileInfo" class="nav-link">9. getFileInfo</a>
+      <a href="#searchFiles" class="nav-link">10. searchFiles</a>
+      <a href="#findInFiles" class="nav-link">11. findInFiles</a>
+      <a href="#listSymbols" class="nav-link">12. listSymbols</a>
+
+      <div class="nav-section-title">Terminal Tools</div>
+      <a href="#executeCommand" class="nav-link">13. executeCommand</a>
+      <a href="#terminalInput" class="nav-link">14. terminalInput</a>
+      <a href="#stopTerminal" class="nav-link">15. stopTerminal</a>
+
+      <div class="nav-section-title">Plan & Utilities</div>
+      <a href="#createPlan" class="nav-link">16. createPlan</a>
+      <a href="#updatePlan" class="nav-link">17. updatePlan</a>
+      <a href="#getCurrentDatetime" class="nav-link">18. getCurrentDatetime</a>
+      <a href="#webRequest" class="nav-link">19. webRequest</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="content">
+      
+      <!-- Overview Section -->
+      <section id="overview">
+        <h1>🛠️ coderun-tools Documentation</h1>
+        <p>Standalone, multi-provider AI Agent tools library built in pure ESM JavaScript (<code>"type": "module"</code>). Designed for frictionless integration into any AI agent framework (OpenAI, Anthropic, Gemini, Ollama, VS Code extensions, or Node.js backends).</p>
+
+        <div class="alert alert-tip">
+          <strong>⚡ Standardized Return Payload:</strong> Every single tool call resolves to a clean, deterministic object shape: <code>{ toolName, args, output }</code>.
+        </div>
+      </section>
+
+      <!-- Key Features Section -->
+      <section id="features">
+        <h2>Key Features</h2>
+        <ul>
+          <li><strong>ES Modules (ESM)</strong>: Built natively using clean <code>import</code> and <code>export</code> syntax.</li>
+          <li><strong>Dual Terminal Execution Engine</strong>:
+            <ul>
+              <li><em>Self-Executing Mode</em>: Executes shell commands with live 300ms stream flushing.</li>
+              <li><em>Interactive Mode (<code>isInteractive: true</code>)</em>: Spawns background dev servers/REPLs immediately (15-30ms response) with PID tracking, live stream callbacks (<code>onData</code>), and stdin control (<code>terminalInput</code>).</li>
+            </ul>
+          </li>
+          <li><strong>Structured Task Planning</strong>: Create and update multi-step plans with automatic status transitions (<code>TODO</code> ➔ <code>WIP</code> ➔ <code>DONE</code>).</li>
+          <li><strong>Universal Tool Registry</strong>: Exposes <code>getDefinitions()</code> (OpenAI/Ollama tool schemas) and <code>executeTool(name, args)</code> for dynamic tool dispatching.</li>
+        </ul>
+      </section>
+
+      <!-- Installation Section -->
+      <section id="installation">
+        <h2>Installation</h2>
+        <pre><code>npm install coderun-tools</code></pre>
+      </section>
+
+      <!-- Quickstart Section -->
+      <section id="quickstart">
+        <h2>Quickstart & Imports</h2>
+        <h3>ES Modules (ESM)</h3>
+        <pre><code>import coderunTools, { readFile, executeCommand, getDefinitions, executeTool } from 'coderun-tools';
+
+// 1. Direct tool invocation:
+var res = await coderunTools.readFile({ path: 'package.json' });
+console.log(res.output.content);
+
+// 2. Generic LLM tool execution:
+var toolsSchema = getDefinitions();
+var toolCallResult = await executeTool('read_file', { path: 'package.json' });</code></pre>
+      </section>
+
+      <!-- Tool Reference Sections -->
+      <section id="readFile">
+        <h2>1. <code>readFile</code> (<code>read_file</code>)</h2>
+        <p>Reads the full contents of a specified file path in the workspace.</p>
+        <pre><code>var res = await coderunTools.readFile({ path: 'package.json' });</code></pre>
+        <h3>Success Output</h3>
+        <pre><code>{
+  "toolName": "readFile",
+  "args": { "path": "package.json" },
+  "output": {
+    "success": true,
+    "content": "{\n  \"name\": \"coderun-tools\",\n  \"version\": \"1.0.1\"\n}",
+    "file_path": "package.json",
+    "bytes": 441
+  }
+}</code></pre>
+      </section>
+
+      <section id="writeFile">
+        <h2>2. <code>writeFile</code> (<code>write_file</code>)</h2>
+        <p>Creates a file or overwrites an existing file, creating missing parent directories recursively.</p>
+        <pre><code>var res = await coderunTools.writeFile({ path: 'src/app.js', content: 'console.log("Hello!");' });</code></pre>
+        <h3>Success Output</h3>
+        <pre><code>{
+  "toolName": "writeFile",
+  "args": { "path": "src/app.js", "content": "console.log(\"Hello!\");" },
+  "output": {
+    "success": true,
+    "content": "Wrote file 'src/app.js' successfully",
+    "file_path": "src/app.js",
+    "bytes": 21
+  }
+}</code></pre>
+      </section>
+
+      <section id="editFile">
+        <h2>3. <code>editFile</code> (<code>edit_file</code>)</h2>
+        <p>Replaces a specific text block (<code>oldText</code>) with new text (<code>newText</code>) inside a file.</p>
+        <pre><code>var res = await coderunTools.editFile({ path: 'src/app.js', oldText: 'Hello!', newText: 'Hello CodeRun!' });</code></pre>
+      </section>
+
+      <section id="patchFile">
+        <h2>4. <code>patchFile</code> (<code>patch_file</code>)</h2>
+        <p>Applies multiple search-and-replace patch blocks to a file in sequence.</p>
+        <pre><code>var res = await coderunTools.patchFile({
+  path: 'src/config.js',
+  patches: [{ oldText: '3000', newText: '8080' }]
+});</code></pre>
+      </section>
+
+      <section id="deleteFile">
+        <h2>5. <code>deleteFile</code> (<code>delete_file</code>)</h2>
+        <p>Deletes a single target file permanently.</p>
+        <pre><code>var res = await coderunTools.deleteFile({ path: 'scratch.tmp' });</code></pre>
+      </section>
+
+      <section id="createFolder">
+        <h2>6. <code>createFolder</code> (<code>create_folder</code>)</h2>
+        <p>Creates a directory and any missing parent directories recursively.</p>
+        <pre><code>var res = await coderunTools.createFolder({ path: 'src/utils/logs' });</code></pre>
+      </section>
+
+      <section id="deleteFolder">
+        <h2>7. <code>deleteFolder</code> (<code>delete_folder</code>)</h2>
+        <p>Deletes a directory and all of its contents recursively.</p>
+        <pre><code>var res = await coderunTools.deleteFolder({ path: 'dist' });</code></pre>
+      </section>
+
+      <section id="listDirectory">
+        <h2>8. <code>listDirectory</code> (<code>list_directory</code>)</h2>
+        <p>Lists all files and subdirectories inside a directory folder.</p>
+        <pre><code>var res = await coderunTools.listDirectory({ path: 'src' });</code></pre>
+      </section>
+
+      <section id="getFileInfo">
+        <h2>9. <code>getFileInfo</code> (<code>get_file_info</code>)</h2>
+        <p>Gets metadata (file size, creation timestamp, modification timestamp, entry type) for a file or folder.</p>
+        <pre><code>var res = await coderunTools.getFileInfo({ path: 'package.json' });</code></pre>
+      </section>
+
+      <section id="searchFiles">
+        <h2>10. <code>searchFiles</code> (<code>search_files</code>)</h2>
+        <p>Recursively finds file paths matching a filename pattern or extension in the workspace.</p>
+        <pre><code>var res = await coderunTools.searchFiles({ pattern: 'readFile' });</code></pre>
+      </section>
+
+      <section id="findInFiles">
+        <h2>11. <code>findInFiles</code> (<code>find_in_files</code>)</h2>
+        <p>Searches for text content occurrences inside workspace files.</p>
+        <pre><code>var res = await coderunTools.findInFiles({ query: 'formatResponse' });</code></pre>
+      </section>
+
+      <section id="listSymbols">
+        <h2>12. <code>listSymbols</code> (<code>list_symbols</code>)</h2>
+        <p>Extracts function, class, and method symbol definitions with line numbers from a code file.</p>
+        <pre><code>var res = await coderunTools.listSymbols({ path: 'src/toolRegistry.js' });</code></pre>
+      </section>
+
+      <section id="executeCommand">
+        <h2>13. <code>executeCommand</code> (<code>execute_command</code> / <code>run_terminal</code>)</h2>
+        <p>Executes shell commands in self-executing mode or interactive mode (<code>isInteractive: true</code>).</p>
+        <pre><code>// Self-executing command:
+var res = await coderunTools.executeCommand({ command: 'node -v' });
+
+// Interactive background server command (returns PID in 15ms):
+var serverRes = await coderunTools.executeCommand({ command: 'node server.js', isInteractive: true });</code></pre>
+      </section>
+
+      <section id="terminalInput">
+        <h2>14. <code>terminalInput</code> (<code>terminal_input</code>)</h2>
+        <p>Sends keyboard input string into a running background interactive process's <code>stdin</code>.</p>
+        <pre><code>var res = await coderunTools.terminalInput({ processId: 44716, input: 'console.log("hi");\n' });</code></pre>
+      </section>
+
+      <section id="stopTerminal">
+        <h2>15. <code>stopTerminal</code> (<code>stop_terminal</code>)</h2>
+        <p>Stops/kills a running background interactive process by PID.</p>
+        <pre><code>var res = await coderunTools.stopTerminal({ processId: 44716 });</code></pre>
+      </section>
+
+      <section id="createPlan">
+        <h2>16. <code>createPlan</code> (<code>create_plan</code>)</h2>
+        <p>Initializes a plan with execution tasks (initial task state: <code>"TODO"</code>).</p>
+        <pre><code>var res = await coderunTools.createPlan({
+  title: 'Setup Project',
+  tasks: ['Initialize package.json', 'Create src/index.js']
+});</code></pre>
+      </section>
+
+      <section id="updatePlan">
+        <h2>17. <code>updatePlan</code> (<code>update_plan</code>)</h2>
+        <p>Updates task status in an active plan (<code>TODO</code> ➔ <code>WIP</code> ➔ <code>DONE</code>).</p>
+        <pre><code>var res = await coderunTools.updatePlan({ taskId: 1, status: 'DONE' });</code></pre>
+      </section>
+
+      <section id="getCurrentDatetime">
+        <h2>18. <code>getCurrentDatetime</code> (<code>get_current_datetime</code>)</h2>
+        <p>Gets current system date, time, and ISO timestamp.</p>
+        <pre><code>var res = await coderunTools.getCurrentDatetime();</code></pre>
+      </section>
+
+      <section id="webRequest">
+        <h2>19. <code>webRequest</code> (<code>web_request</code>)</h2>
+        <p>Performs HTTP GET/POST network requests with headers and payload.</p>
+        <pre><code>var res = await coderunTools.webRequest({ url: 'https://api.github.com/zen' });</code></pre>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function setupNav() {
+      var links = document.querySelectorAll('.nav-link');
+      for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function(e) {
+          for (var j = 0; j < links.length; j++) {
+            links[j].classList.remove('active');
+          }
+          this.classList.add('active');
+        });
+      }
+    }
+    setupNav();
+  </script>
+</body>
+</html>
