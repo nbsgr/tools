@@ -1,5 +1,13 @@
 // index.js — Main library entry point for coderun-tools (ESM)
-import { getDefinitions, executeTool, toolNames, getToolNames } from './src/toolRegistry.js';
+import {
+  getDefinitions,
+  executeTool,
+  toolNames,
+  getToolNames,
+  getOpenAiAgentsDefinitions,
+  getGeminiAdkDefinitions,
+  getLangchainDefinitions
+} from './src/toolRegistry.js';
 import { readFile } from './src/tools/readFile.js';
 import { writeFile } from './src/tools/writeFile.js';
 import { editFile } from './src/tools/editFile.js';
@@ -25,6 +33,9 @@ export {
   executeTool,
   toolNames,
   getToolNames,
+  getOpenAiAgentsDefinitions,
+  getGeminiAdkDefinitions,
+  getLangchainDefinitions,
   readFile,
   writeFile,
   editFile,
@@ -52,6 +63,9 @@ var coderunTools = {
   executeTool: executeTool,
   toolNames: toolNames,
   getToolNames: getToolNames,
+  getOpenAiAgentsDefinitions: getOpenAiAgentsDefinitions,
+  getGeminiAdkDefinitions: getGeminiAdkDefinitions,
+  getLangchainDefinitions: getLangchainDefinitions,
   readFile: readFile,
   writeFile: writeFile,
   editFile: editFile,

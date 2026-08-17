@@ -148,6 +148,87 @@ export function getToolNames() {
   return toolNames.slice();
 }
 
+function makeExecuteHandler(name) {
+  return function(args, options) {
+    return executeTool(name, args, options).then(function(res) {
+      return JSON.stringify(res.output);
+    });
+  };
+}
+
+function makeGeminiExecuteHandler(name) {
+  return function(args, options) {
+    return executeTool(name, args, options);
+  };
+}
+
+export function getOpenAiAgentsDefinitions(toolSdk) {
+  var defs = getDefinitions();
+  var result = [];
+  for (var i = 0; i < defs.length; i++) {
+    var def = defs[i];
+    var tName = def.function.name;
+    var toolObj = {
+      name: tName,
+      description: def.function.description,
+      parameters: def.function.parameters,
+      execute: makeExecuteHandler(tName)
+    };
+    if (typeof toolSdk === 'function') {
+      result.push(toolSdk(toolObj));
+    } else if (toolSdk && typeof toolSdk.tool === 'function') {
+      result.push(toolSdk.tool(toolObj));
+    } else {
+      result.push(toolObj);
+    }
+  }
+  return result;
+}
+
+export function getGeminiAdkDefinitions(toolSdk) {
+  var defs = getDefinitions();
+  var result = [];
+  for (var i = 0; i < defs.length; i++) {
+    var def = defs[i];
+    var tName = def.function.name;
+    var toolObj = {
+      name: tName,
+      description: def.function.description,
+      parameters: def.function.parameters,
+      execute: makeGeminiExecuteHandler(tName)
+    };
+    if (typeof toolSdk === 'function') {
+      result.push(toolSdk(toolObj));
+    } else if (toolSdk && typeof toolSdk.FunctionTool === 'function') {
+      result.push(new toolSdk.FunctionTool(toolObj));
+    } else {
+      result.push(toolObj);
+    }
+  }
+  return result;
+}
+
+export function getLangchainDefinitions(toolSdk) {
+  var defs = getDefinitions();
+  var result = [];
+  for (var i = 0; i < defs.length; i++) {
+    var def = defs[i];
+    var tName = def.function.name;
+    var toolObj = {
+      name: tName,
+      description: def.function.description,
+      schema: def.function.parameters,
+      func: makeExecuteHandler(tName)
+    };
+    if (typeof toolSdk === 'function') {
+      result.push(toolSdk(toolObj.func, toolObj));
+    } else {
+      result.push(toolObj);
+    }
+  }
+  return result;
+}
+
 export {
   registry
 };
