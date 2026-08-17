@@ -1,5 +1,9 @@
 # 🛠️ coderun-tools
 
+[![Documentation](https://img.shields.io/badge/docs-live-blue.svg)](https://nbsgr.github.io/tools/)
+
+**📖 Official Documentation & Developer Guide**: [https://nbsgr.github.io/tools/](https://nbsgr.github.io/tools/)
+
 Standalone, multi-provider AI Agent tools library built in pure JavaScript (ES Modules, `"type": "module"`).
 
 Designed for frictionless integration into any AI agent framework (OpenAI, Anthropic, Gemini, Ollama, VS Code extensions, or Node.js backends) with zero re-architecting.
